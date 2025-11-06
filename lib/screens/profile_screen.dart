@@ -14,12 +14,15 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            // CircleAvatar yang Diperbarui: Mengganti NetworkImage dengan Icon Orang
             const CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(
-                'https://via.placeholder.com/150/A6B1E1/FFFFFF?Text=AN',
-              ),
               backgroundColor: Colors.indigo,
+              child: Icon(
+                Icons.person, // Ikon orang yang terisi
+                size: 80, // Ukuran ikon diperbesar agar sesuai dengan radius 60
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 20),
             const Text(

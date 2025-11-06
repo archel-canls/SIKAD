@@ -41,19 +41,7 @@ class NotificationsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Notifikasi'),
         // Tombol Hapus Semua (Clear All)
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.clear_all),
-            tooltip: 'Hapus Semua Notifikasi',
-            onPressed: () {
-              // Logika hapus semua notifikasi
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Semua notifikasi telah dihapus.')),
-              );
-              // Dalam aplikasi nyata, ini akan me-refresh State/API call
-            },
-          ),
-        ],
+        
       ),
       body: _notifications.isEmpty
           ? const Center(
