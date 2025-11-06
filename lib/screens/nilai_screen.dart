@@ -14,7 +14,7 @@ class NilaiScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Data Nilai'), // Menggunakan AppBarTheme
+        title: const Text('Data Nilai'), 
       ),
       body: ListView(
         padding: const EdgeInsets.all(20.0),

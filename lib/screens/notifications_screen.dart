@@ -40,8 +40,6 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notifikasi'),
-        // Tombol Hapus Semua (Clear All)
-        
       ),
       body: _notifications.isEmpty
           ? const Center(
@@ -89,7 +87,6 @@ class NotificationsScreen extends StatelessWidget {
         ),
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
-          // Logika ketika notifikasi diklik
         },
       ),
     );

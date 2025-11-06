@@ -22,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Berhasil!')),
       );
-      // Ganti '/dashboard' dengan rute dashboard Anda yang sebenarnya
       Navigator.of(context).pushReplacementNamed('/dashboard');
     } else {
       // Login Gagal
@@ -38,13 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       // SafeArea digunakan untuk menghindari elemen UI masuk ke area notifikasi/kamera.
       body: SafeArea(
-        // LayoutBuilder digunakan untuk mendapatkan tinggi layar maksimal,
-        // yang dibutuhkan untuk centering vertikal dalam SingleChildScrollView.
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              // ConstrainedBox memastikan konten mengambil tinggi minimum setinggi layar,
-              // sehingga ketika konten tidak melampaui layar, Center berfungsi.
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight,
@@ -52,22 +47,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: Column(
-                    // Mengatur konten agar berada di tengah secara vertikal
                     mainAxisAlignment: MainAxisAlignment.center,
-                    // Mengatur konten agar terpusat secara horizontal
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      // Gambar/Logo (Height dikoreksi dan sekarang terpusat)
                       Image.asset(
                         'assets/logo_sikad.png', 
-                        height: 180, // Ukuran logo yang disarankan
+                        height: 180, 
                       ),
                       const SizedBox(height: 40),
                       
-                      // Text Judul
+
                       const Text(
-                        'Selamat Datang di SIKAD!',
-                        textAlign: TextAlign.center, // Text Alignment diatur ke center
+                        'Selamat Datang!',
+                        textAlign: TextAlign.center, 
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -76,10 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 8),
                       
-                      // Text Kecil Deskripsi
                       const Text(
                         'Silakan masuk untuk mengakses informasi akademik digital Anda.',
-                        textAlign: TextAlign.center, // Text Alignment diatur ke center
+                        textAlign: TextAlign.center, 
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
@@ -87,19 +78,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 40),
                       
-                      // TextField Username (dibiarkan full width, tetapi terpusat dalam Column)
                       TextFormField(
                         controller: _usernameController,
                         decoration: InputDecoration(
                           labelText: 'Username',
                           prefixIcon: const Icon(Icons.person_outline, color: Colors.indigo),
                           hintText: 'Masukkan Username Anda (contoh: user)',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)), // Style modern
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)), 
                         ),
                       ),
                       const SizedBox(height: 20),
-                      
-                      // TextField Password (dibiarkan full width)
+
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscureText,
@@ -107,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: 'Password',
                           prefixIcon: const Icon(Icons.lock_outline, color: Colors.indigo),
                           hintText: 'Masukkan Kata Sandi Anda (contoh: password)',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)), // Style modern
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText ? Icons.visibility_off : Icons.visibility,
@@ -122,8 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      
-                      // Tombol Login (Full width dan terpusat dalam Column)
+
                       SizedBox(
                         width: double.infinity,
                         height: 55,
@@ -143,10 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
                       
-                      // Lupa Password? (Terpusat dalam Column)
                       TextButton(
                         onPressed: () {
-                          // Pastikan rute ini ada di main.dart
                           Navigator.of(context).pushNamed('/forgot_password'); 
                         },
                         child: const Text(

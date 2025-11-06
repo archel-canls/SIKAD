@@ -6,7 +6,7 @@ class DashboardScreen extends StatelessWidget {
   void _handleLogout(BuildContext context) {
     Navigator.of(context).pushNamedAndRemoveUntil(
       '/', 
-      (Route<dynamic> route) => false, // Hapus semua rute sebelumnya
+      (Route<dynamic> route) => false, 
     );
   }
 
@@ -16,15 +16,12 @@ class DashboardScreen extends StatelessWidget {
    appBar: AppBar(
         title: const Text('Dashboard SIKAD'),
         actions: [
-          // Icon Notifikasi - UBAH BAGIAN INI
           IconButton(
             icon: const Icon(Icons.notifications_none),
             onPressed: () {
-              // Navigasi ke halaman Notifikasi
-              Navigator.of(context).pushNamed('/notifications'); // <--- Arahkan ke rute baru
+              Navigator.of(context).pushNamed('/notifications');
             },
           ),
-          // Tombol Logout
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
@@ -37,9 +34,8 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Header: Sambutan User
             const Text(
-              'Halo, Andi Nugroho!',
+              'Halo, Archel!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -49,14 +45,14 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             AspectRatio(
-              aspectRatio: 16 / 5, // Rasio umum untuk banner yang lebih lebar
+              aspectRatio: 16 / 5,
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: const DecorationImage(
-                    image: AssetImage('assets/banner_akademik.png'), // Pastikan path benar
-                    fit: BoxFit.cover, // Gunakan BoxFit.cover agar gambar mengisi rasio tanpa meregang
+                    image: AssetImage('assets/banner_akademik.png'), 
+                    fit: BoxFit.cover, 
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -81,7 +77,6 @@ class DashboardScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // Judul Menu
             const Text(
               'Menu Layanan',
               style: TextStyle(
@@ -92,7 +87,6 @@ class DashboardScreen extends StatelessWidget {
             ),
             const SizedBox(height: 15),
 
-            // Grid Menu Diperbarui
             GridView.count(
               crossAxisCount: 3,
               shrinkWrap: true,
@@ -100,15 +94,10 @@ class DashboardScreen extends StatelessWidget {
               mainAxisSpacing: 15,
               crossAxisSpacing: 15,
               children: <Widget>[
-                // 1. Profil
                 _buildMenuItem(context, Icons.person, 'Profil', '/profile'),
-                // 2. Data Nilai (BARU)
                 _buildMenuItem(context, Icons.list_alt, 'Data Nilai', '/nilai'),
-                // 3. Pengaturan (Settings) (BARU)
                 _buildMenuItem(context, Icons.settings, 'Pengaturan', '/settings'),
-                // 4. Jadwal (BARU)
                 _buildMenuItem(context, Icons.calendar_today, 'Jadwal Kuliah', '/jadwal'),
-                // Item Tambahan
                 _buildMenuItem(context, Icons.folder_copy, 'KRS', '/krs'),
                 _buildMenuItem(context, Icons.payments, 'Pembayaran', '/pembayaran'),
               ],
@@ -119,11 +108,9 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  // Widget Pembantu untuk Item Menu
   Widget _buildMenuItem(BuildContext context, IconData icon, String text, String route) {
     return InkWell(
       onTap: () {
-        // Navigasi ke halaman yang sesuai
         Navigator.of(context).pushNamed(route);
       },
       child: Card(

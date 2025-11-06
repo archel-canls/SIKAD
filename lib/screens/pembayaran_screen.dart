@@ -12,11 +12,9 @@ class PembayaranScreen extends StatelessWidget {
 
   void _handleBayar(BuildContext context, Map<String, dynamic> tagihan) {
     if (tagihan['status'] == 'Belum Bayar') {
-      // Logika pembayaran (misal: navigasi ke halaman pembayaran detail)
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Anda akan membayar ${tagihan['jenis']} sebesar Rp${tagihan['jumlah']}')),
       );
-      // Contoh: Navigator.of(context).pushNamed('/detail_pembayaran', arguments: tagihan);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Tagihan ini sudah lunas.')),
@@ -28,7 +26,7 @@ class PembayaranScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pembayaran'), // Menggunakan AppBarTheme
+        title: const Text('Pembayaran'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20.0),
@@ -43,19 +41,6 @@ class PembayaranScreen extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 55,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                // Logika untuk melihat riwayat pembayaran
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Melihat Riwayat Pembayaran...')),
-                );
-              },
-              icon: const Icon(Icons.history, color: Colors.white),
-              label: const Text('Lihat Riwayat Pembayaran'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal, // Warna berbeda
-              ),
-            ),
           ),
         ],
       ),

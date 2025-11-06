@@ -14,7 +14,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lupa Password'), // Menggunakan AppBarTheme
+        title: const Text('Lupa Password'), 
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(30.0),

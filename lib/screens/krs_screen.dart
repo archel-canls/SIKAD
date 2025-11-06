@@ -49,7 +49,7 @@ class _KrsScreenState extends State<KrsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('KRS dengan total ${_getTotalSks()} SKS berhasil disimpan!')),
     );
-    Navigator.of(context).pop(); // Kembali ke dashboard setelah submit
+    Navigator.of(context).pop(); 
   }
 
   @override

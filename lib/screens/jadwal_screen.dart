@@ -14,7 +14,7 @@ class JadwalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jadwal Kuliah'), // Menggunakan AppBarTheme
+        title: const Text('Jadwal Kuliah'), 
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(20.0),

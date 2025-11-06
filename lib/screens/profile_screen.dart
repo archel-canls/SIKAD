@@ -7,26 +7,25 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil Pengguna'), // Menggunakan AppBarTheme
+        title: const Text('Profil Pengguna'), 
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // CircleAvatar yang Diperbarui: Mengganti NetworkImage dengan Icon Orang
             const CircleAvatar(
               radius: 60,
               backgroundColor: Colors.indigo,
               child: Icon(
-                Icons.person, // Ikon orang yang terisi
-                size: 80, // Ukuran ikon diperbesar agar sesuai dengan radius 60
+                Icons.person,
+                size: 80, 
                 color: Colors.white,
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              'Andi Nugroho',
+              'Archel',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -43,11 +42,11 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _buildProfileInfo(Icons.credit_card, 'NIM', '2101010077'),
+                    _buildProfileInfo(Icons.credit_card, 'NIM', '23670119'),
                     const Divider(),
-                    _buildProfileInfo(Icons.email, 'Email', 'andi.nugroho@example.com'),
+                    _buildProfileInfo(Icons.email, 'Email', 'archel@gmail.com'),
                     const Divider(),
-                    _buildProfileInfo(Icons.location_on, 'Alamat', 'Jl. Pendidikan No. 12, Semarang'),
+                    _buildProfileInfo(Icons.location_on, 'Alamat', 'Jl. Medoho Raya No. 12, Semarang'),
                   ],
                 ),
               ),
