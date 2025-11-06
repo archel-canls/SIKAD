@@ -7,7 +7,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pengaturan'), // Menggunakan AppBarTheme
+        title: const Text('Pengaturan'), 
       ),
       body: ListView(
         padding: const EdgeInsets.all(10.0),
@@ -22,12 +22,12 @@ class SettingsScreen extends StatelessWidget {
           _buildSettingsTile(
             title: 'Ubah Password',
             icon: Icons.vpn_key_outlined,
-            onTap: () { /* Navigasi Ubah Password */ },
+            onTap: () {},
           ),
           _buildSettingsTile(
             title: 'Kelola Notifikasi',
             icon: Icons.notifications_active_outlined,
-            onTap: () { /* Navigasi Kelola Notifikasi */ },
+            onTap: () {},
           ),
           const Divider(height: 30),
           const Padding(
@@ -41,12 +41,12 @@ class SettingsScreen extends StatelessWidget {
             title: 'Tema Aplikasi',
             icon: Icons.color_lens_outlined,
             trailing: Switch(value: true, onChanged: (val) {}),
-            onTap: () { /* Ganti Tema */ },
+            onTap: () {},
           ),
           _buildSettingsTile(
             title: 'Tentang SIKAD',
             icon: Icons.info_outline,
-            onTap: () { /* Tampilkan Info Aplikasi */ },
+            onTap: () {},
           ),
         ],
       ),
