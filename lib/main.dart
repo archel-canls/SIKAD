@@ -42,7 +42,7 @@ class _SIKADAppState extends State<SIKADApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SIKAD Kampus',
+      title: 'SIKAD',
       debugShowCheckedModeBanner: false,
       // Menggunakan state theme mode yang dikelola
       themeMode: _themeMode, 
