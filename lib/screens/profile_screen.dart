@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  // Data statis Mahasiswa
+  static const String studentName = 'Arif Alfian Choirul Anwar';
+  static const String studentNpm = '23670119';
+  static const String studentMajor = 'Teknik Informatika';
+  static const String studentEntryYear = '2023';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,13 +55,13 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Informasi Dasar
-            const Text(
-              'Muhammad Riyan Nugraha',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            // Informasi Dasar (Menggunakan data Anda)
+            Text(
+              studentName,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(
-              '190201041999 | Teknik Informatika',
+              '$studentNpm | $studentMajor',
               style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
             ),
             const SizedBox(height: 30),
@@ -65,23 +71,23 @@ class ProfileScreen extends StatelessWidget {
               context, 
               title: 'Data Diri',
               fields: {
-                'Email': 'riyan.nugraha@student.ac.id',
-                'Telepon': '+62 812-XXXX-XXXX',
-                'Alamat': 'Jl. Pendidikan No. 45, Bandung',
+                'Email': 'arif.alfian@student.ac.id',
+                'Telepon': '+62 813-XXXX-XXXX',
+                'Alamat': 'Jl. Pelajar No. 10, Jakarta',
                 'Status': 'Aktif',
               }
             ),
 
             const SizedBox(height: 20),
 
-            // Detail Akademik
+            // Detail Akademik (Diselaraskan dengan data mahasiswa baru)
             _buildInfoCard(
               context, 
               title: 'Data Akademik',
               fields: {
-                'Tahun Masuk': '2019',
-                'Semester': '9 (Ganjil)',
-                'IPK Sementara': '3.75',
+                'Tahun Masuk': studentEntryYear,
+                'Semester': '1 (Ganjil)',
+                'IPK Sementara': '0.00 (Baru)',
                 'Dosen Wali': 'Dr. Ir. Budi Utama, M.Sc.',
               }
             ),
@@ -110,6 +116,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  // Helper Widget untuk membuat Card Informasi
   Widget _buildInfoCard(BuildContext context, {required String title, required Map<String, String> fields}) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
@@ -151,7 +158,7 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 100,
+                      width: 120, // Lebar yang cukup untuk label
                       child: Text(
                         '${entry.key}:',
                         style: TextStyle(fontWeight: FontWeight.w500, color: isDarkMode ? Colors.white70 : Colors.black54),
