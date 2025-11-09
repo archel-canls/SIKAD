@@ -4,66 +4,77 @@ class JadwalScreen extends StatelessWidget {
   const JadwalScreen({super.key});
 
   final List<Map<String, String>> _jadwal = const [
-    {'hari': 'Senin', 'waktu': '08:00 - 10:00', 'matkul': 'Pemrograman Mobile', 'ruang': 'R. Lab 301'},
-    {'hari': 'Senin', 'waktu': '10:00 - 12:00', 'matkul': 'Statistika', 'ruang': 'R. Dosen A'},
-    {'hari': 'Rabu', 'waktu': '13:00 - 15:00', 'matkul': 'Basis Data Lanjut', 'ruang': 'R. Kuliah B1'},
-    {'hari': 'Jumat', 'waktu': '09:00 - 11:00', 'matkul': 'Pendidikan Agama', 'ruang': 'R. Serbaguna'},
+    {'matkul': 'Pemrograman Mobile', 'dosen': 'Dr. Siti Rahma, S.Kom, M.T.', 'ruang': 'R. Lab 302', 'waktu': 'Senin, 08:00 - 10:30'},
+    {'matkul': 'Sistem Operasi', 'dosen': 'Prof. Budi Hartono, Ph.D.', 'ruang': 'R. Kuliah 101', 'waktu': 'Selasa, 13:00 - 15:30'},
+    {'matkul': 'Basis Data Lanjut', 'dosen': 'Ir. Joko Susilo, M.Kom.', 'ruang': 'R. Lab 401', 'waktu': 'Rabu, 10:30 - 13:00'},
+    {'matkul': 'Statistika Bisnis', 'dosen': 'Dra. Ayu Lestari, M.Si.', 'ruang': 'R. Kuliah 205', 'waktu': 'Kamis, 08:00 - 10:30'},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jadwal Kuliah'), 
+        title: const Text('Jadwal Kuliah Semester Ini'),
       ),
-      body: ListView.builder(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
-        itemCount: _jadwal.length,
-        itemBuilder: (context, index) {
-          final item = _jadwal[index];
-          return _buildJadwalCard(item);
-        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _jadwal.map((item) => _buildJadwalTile(context, item)).toList(),
+        ),
       ),
     );
   }
 
-  Widget _buildJadwalCard(Map<String, String> item) {
+  Widget _buildJadwalTile(BuildContext context, Map<String, String> item) {
     return Card(
       elevation: 4,
-      margin: const EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 15.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                const Icon(Icons.calendar_today, color: Colors.indigo, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  item['hari']!,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigo),
-                ),
-                const Spacer(),
-                const Icon(Icons.access_time, color: Colors.grey, size: 20),
-                const SizedBox(width: 5),
-                Text(item['waktu']!, style: const TextStyle(fontSize: 16, color: Colors.grey)),
-              ],
+            // Waktu dan Hari
+            Text(
+              item['waktu']!,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
-            const Divider(height: 15),
+            const Divider(height: 15, thickness: 1),
+            // Nama Mata Kuliah
             Text(
               item['matkul']!,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black87),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 8),
+            // Dosen
             Row(
               children: [
-                const Icon(Icons.location_on, color: Colors.teal, size: 18),
-                const SizedBox(width: 5),
+                Icon(Icons.person_outline, size: 18, color: Colors.grey.shade600),
+                const SizedBox(width: 8),
+                Text(
+                  item['dosen']!,
+                  style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            // Ruangan
+            Row(
+              children: [
+                Icon(Icons.location_on_outlined, size: 18, color: Colors.grey.shade600),
+                const SizedBox(width: 8),
                 Text(
                   item['ruang']!,
-                  style: const TextStyle(fontSize: 16, color: Colors.teal, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
                 ),
               ],
             ),

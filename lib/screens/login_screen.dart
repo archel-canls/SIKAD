@@ -18,13 +18,11 @@ class _LoginScreenState extends State<LoginScreen> {
     const String correctPass = 'password';
 
     if (_usernameController.text == correctUser && _passwordController.text == correctPass) {
-      // Login Berhasil
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Berhasil!')),
+        const SnackBar(content: Text('Login Berhasil! Mengarahkan ke Dashboard...')),
       );
-      Navigator.of(context).pushReplacementNamed('/dashboard');
+      Navigator.of(context).pushReplacementNamed('/main_layout'); 
     } else {
-      // Login Gagal
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Gagal: Username atau Password salah!')),
       );
@@ -33,119 +31,187 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final primaryColor = theme.primaryColor;
+    final backgroundColor = theme.scaffoldBackgroundColor;
+    final cardColor = theme.cardTheme.color ?? (theme.brightness == Brightness.dark ? const Color(0xFF1F1F1F) : Colors.white);
+    
+    // Warna latar belakang yang lebih menonjol di bagian atas
+    final accentColor = theme.colorScheme.secondary; 
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      // SafeArea digunakan untuk menghindari elemen UI masuk ke area notifikasi/kamera.
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            // Bagian Header dengan Latar Belakang Melengkung
+            Container(
+              height: 300,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/logo_sikad.png', 
-                        height: 180, 
-                      ),
-                      const SizedBox(height: 40),
-                      
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // [PERUBAHAN] Mengganti Icon dan Judul Teks dengan Logo SIKAD
+                    Image.asset(
+                      'assets/logo_sikad.png',
+                      height: 300, // Ukuran logo
+                      width: 300,
+                      // Fallback jika gambar tidak ditemukan
+                      errorBuilder: (context, error, stackTrace) => Icon(Icons.school, size: 80, color: accentColor),
+                    ),
+                    const SizedBox(height: 5),
+                  ],
+                ),
+              ),
+            ),
 
-                      const Text(
-                        'Selamat Datang!',
-                        textAlign: TextAlign.center, 
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.indigo,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      
-                      const Text(
-                        'Silakan masuk untuk mengakses informasi akademik digital Anda.',
-                        textAlign: TextAlign.center, 
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-                      
-                      TextFormField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          labelText: 'Username',
-                          prefixIcon: const Icon(Icons.person_outline, color: Colors.indigo),
-                          hintText: 'Masukkan Username Anda (contoh: user)',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)), 
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.indigo),
-                          hintText: 'Masukkan Kata Sandi Anda (contoh: password)',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText ? Icons.visibility_off : Icons.visibility,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
+            // Bagian Form yang Terletak di dalam Card Mengambang
+            Transform.translate(
+              offset: const Offset(0, -60), // Mengangkat Card 60 pixel ke atas
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Card(
+                  color: cardColor,
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          'Masuk ke Akun Anda',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 40),
+                        const SizedBox(height: 30),
 
-                      SizedBox(
-                        width: double.infinity,
-                        height: 55,
-                        child: ElevatedButton(
-                          onPressed: () => _handleLogin(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.indigo, // Warna tombol
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        // Input Username
+                        _buildTextField(
+                          controller: _usernameController,
+                          label: 'NIM / Username',
+                          hint: 'Contoh: user',
+                          icon: Icons.person_outline,
+                          primaryColor: primaryColor,
+                        ),
+                        const SizedBox(height: 20),
+
+                        // Input Password
+                        _buildPasswordTextField(primaryColor),
+                        const SizedBox(height: 40),
+
+                        // Tombol Login
+                        _buildLoginButton(context, primaryColor),
+                        const SizedBox(height: 20),
+
+                        // Link Lupa Password
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/forgot_password');
+                          },
+                          child: Text(
+                            'Lupa Password? Klik Disini',
+                            style: TextStyle(
+                              color: accentColor, 
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: const Text(
-                            'Masuk ke Akun', 
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/forgot_password'); 
-                        },
-                        child: const Text(
-                          'Lupa Password?',
-                          style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            );
+            ),
+            
+            // Memberikan sedikit ruang di bagian bawah setelah Card
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // --- Helper Widgets (Sama dengan sebelumnya, tapi dengan style Card) ---
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    required Color primaryColor,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon, color: primaryColor),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)), 
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: primaryColor, width: 2.5),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordTextField(Color primaryColor) {
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: _obscureText,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        hintText: 'Contoh: password',
+        prefixIcon: Icon(Icons.lock_outline, color: primaryColor),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: primaryColor, width: 2.5),
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscureText ? Icons.visibility_off : Icons.visibility,
+            color: Colors.grey,
+          ),
+          onPressed: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginButton(BuildContext context, Color primaryColor) {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: ElevatedButton(
+        onPressed: () => _handleLogin(context),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          elevation: 5,
+        ),
+        child: const Text(
+          'Masuk', 
+          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
     );

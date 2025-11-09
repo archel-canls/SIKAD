@@ -40,6 +40,20 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notifikasi'),
+        // Tombol Hapus Semua (Clear All)
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_forever),
+            tooltip: 'Hapus Semua Notifikasi',
+            onPressed: () {
+              // Logika hapus semua notifikasi
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Semua notifikasi telah dihapus.')),
+              );
+              // Dalam aplikasi nyata, ini akan me-refresh State/API call
+            },
+          ),
+        ],
       ),
       body: _notifications.isEmpty
           ? const Center(
@@ -61,9 +75,9 @@ class NotificationsScreen extends StatelessWidget {
 
   Widget _buildNotificationTile(Map<String, dynamic> notification) {
     return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 4, 
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: notification['color'] as Color,
@@ -71,22 +85,26 @@ class NotificationsScreen extends StatelessWidget {
         ),
         title: Text(
           notification['title'] as String,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text(notification['body'] as String),
+            Text(
+              notification['body'] as String,
+              style: TextStyle(color: Colors.grey.shade700),
+            ),
             const SizedBox(height: 4),
             Text(
               notification['time'] as String,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 12, color: Colors.teal),
             ),
           ],
         ),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: const Icon(Icons.chevron_right, color: Colors.teal),
         onTap: () {
+          // Logika ketika notifikasi diklik
         },
       ),
     );

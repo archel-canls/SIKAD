@@ -1,149 +1,138 @@
 import 'package:flutter/material.dart';
 
-class KrsScreen extends StatefulWidget {
+class KrsScreen extends StatelessWidget {
   const KrsScreen({super.key});
 
-  @override
-  State<KrsScreen> createState() => _KrsScreenState();
-}
-
-class _KrsScreenState extends State<KrsScreen> {
-  // Contoh data dummy mata kuliah yang bisa dipilih
-  final List<Map<String, dynamic>> _availableCourses = const [
-    {'kode': 'TIK401', 'matkul': 'Machine Learning', 'sks': 3, 'selected': false},
-    {'kode': 'TIK402', 'matkul': 'Pengembangan Game', 'sks': 3, 'selected': false},
-    {'kode': 'TIK403', 'matkul': 'Cloud Computing', 'sks': 3, 'selected': false},
-    {'kode': 'UMM404', 'matkul': 'Etika Profesi', 'sks': 2, 'selected': false},
-    {'kode': 'TIK405', 'matkul': 'Keamanan Jaringan', 'sks': 3, 'selected': false},
+  final List<Map<String, String>> _mataKuliah = const [
+    {'kode': 'IT401', 'nama': 'Pemrograman Mobile', 'sks': '3', 'status': 'Wajib'},
+    {'kode': 'IT402', 'nama': 'Sistem Operasi', 'sks': '3', 'status': 'Wajib'},
+    {'kode': 'IT403', 'nama': 'Basis Data Lanjut', 'sks': '3', 'status': 'Wajib'},
+    {'kode': 'UM205', 'nama': 'Statistika Bisnis', 'sks': '2', 'status': 'Pilihan'},
+    {'kode': 'IT404', 'nama': 'Jaringan Komputer', 'sks': '3', 'status': 'Wajib'},
   ];
-
-  List<Map<String, dynamic>> _selectedCourses = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedCourses = List<Map<String, dynamic>>.from(_availableCourses);
-  }
-
-  void _toggleCourseSelection(int index, bool? isSelected) {
-    setState(() {
-      _selectedCourses[index]['selected'] = isSelected!;
-    });
-  }
-
-  int _getTotalSks() {
-    return _selectedCourses
-        .where((course) => course['selected'] == true)
-        .fold(0, (sum, course) => sum + (course['sks'] as int));
-  }
-
-  void _submitKRS(BuildContext context) {
-    final chosenCourses = _selectedCourses.where((course) => course['selected'] == true).toList();
-    if (chosenCourses.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Anda belum memilih mata kuliah.')),
-      );
-      return;
-    }
-    // Logika untuk menyimpan KRS
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('KRS dengan total ${_getTotalSks()} SKS berhasil disimpan!')),
-    );
-    Navigator.of(context).pop(); 
-  }
 
   @override
   Widget build(BuildContext context) {
+    int totalSks = _mataKuliah.fold(0, (sum, item) => sum + int.parse(item['sks']!));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kartu Rencana Studi (KRS)'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Info Header KRS
+            _buildKrsHeader(context, 'Semester 5 (Gasal 2024/2025)', totalSks),
+            const SizedBox(height: 20),
+
+            const Text(
+              'Daftar Mata Kuliah Diambil:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+
+            // List Mata Kuliah
+            ..._mataKuliah.map((item) => _buildKrsTile(context, item)).toList(),
+
+            const SizedBox(height: 30),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('KRS berhasil disimpan dan diajukan.')),
+                  );
+                },
+                icon: const Icon(Icons.save_alt, color: Colors.white),
+                label: const Text('Simpan & Ajukan KRS', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade600,
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildKrsHeader(BuildContext context, String semester, int totalSks) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          gradient: LinearGradient(
+            colors: [Colors.teal.shade500, Colors.teal.shade700],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Pilih Mata Kuliah Semester Berikutnya:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigo),
-                ),
-                const SizedBox(height: 15),
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Mata Kuliah Tersedia:',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        const Divider(),
-                        ..._selectedCourses.asMap().entries.map((entry) {
-                          int idx = entry.key;
-                          Map<String, dynamic> course = entry.value;
-                          return CheckboxListTile(
-                            title: Text(course['matkul']),
-                            subtitle: Text('Kode: ${course['kode']} (${course['sks']} SKS)'),
-                            value: course['selected'],
-                            onChanged: (bool? val) {
-                              _toggleCourseSelection(idx, val);
-                            },
-                            activeColor: Colors.indigo,
-                          );
-                        }).toList(),
-                      ],
-                    ),
-                  ),
-                ),
+                const Text('Semester Aktif', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                Text(semester, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
               ],
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                '$totalSks SKS',
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildKrsTile(BuildContext context, Map<String, String> item) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+          child: Text(item['sks']!, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor)),
+        ),
+        title: Text(item['nama']!, style: const TextStyle(fontWeight: FontWeight.w600)),
+        subtitle: Text('Kode: ${item['kode']!}'),
+        trailing: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: item['status'] == 'Wajib' ? Colors.red.shade100 : Colors.blue.shade100,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Text(
+            item['status']!,
+            style: TextStyle(
+              color: item['status'] == 'Wajib' ? Colors.red.shade700 : Colors.blue.shade700,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  blurRadius: 10,
-                  offset: const Offset(0, -5),
-                ),
-              ],
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Total SKS Dipilih:',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
-                    ),
-                    Text(
-                      '${_getTotalSks()} SKS',
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.teal),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton(
-                    onPressed: () => _submitKRS(context),
-                    child: const Text('Simpan KRS'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Detail mata kuliah ${item['nama']}')),
+          );
+        },
       ),
     );
   }

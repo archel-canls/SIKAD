@@ -3,112 +3,158 @@ import 'package:flutter/material.dart';
 class PembayaranScreen extends StatelessWidget {
   const PembayaranScreen({super.key});
 
-  // Contoh data dummy tagihan
-  final List<Map<String, dynamic>> _tagihanList = const [
-    {'id': 'TGN001', 'jenis': 'SPP Semester 5', 'jumlah': 3500000, 'status': 'Belum Bayar', 'jatuh_tempo': '2024-10-30'},
-    {'id': 'TGN002', 'jenis': 'Praktikum Mobile', 'jumlah': 250000, 'status': 'Sudah Bayar', 'jatuh_tempo': '2024-09-15'},
-    {'id': 'TGN003', 'jenis': 'Denda Keterlambatan', 'jumlah': 50000, 'status': 'Belum Bayar', 'jatuh_tempo': '2024-09-20'},
+  final List<Map<String, dynamic>> _historiPembayaran = const [
+    {'jenis': 'SPP Semester 4', 'tanggal': '15 Juli 2024', 'jumlah': 6500000, 'status': 'Lunas', 'color': Colors.green},
+    {'jenis': 'Biaya Praktikum Lab', 'tanggal': '01 Agustus 2024', 'jumlah': 500000, 'status': 'Lunas', 'color': Colors.green},
+    {'jenis': 'SPP Semester 5', 'tanggal': 'Belum Bayar', 'jumlah': 6500000, 'status': 'Menunggak', 'color': Colors.red},
+    {'jenis': 'Denda Keterlambatan KRS', 'tanggal': 'N/A', 'jumlah': 100000, 'status': 'Belum Dibayar', 'color': Colors.orange},
   ];
-
-  void _handleBayar(BuildContext context, Map<String, dynamic> tagihan) {
-    if (tagihan['status'] == 'Belum Bayar') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Anda akan membayar ${tagihan['jenis']} sebesar Rp${tagihan['jumlah']}')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tagihan ini sudah lunas.')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pembayaran'),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(20.0),
-        children: [
-          const Text(
-            'Daftar Tagihan Anda',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.indigo),
-          ),
-          const SizedBox(height: 15),
-          ..._tagihanList.map((tagihan) => _buildTagihanCard(context, tagihan)).toList(),
-          const SizedBox(height: 30),
-          SizedBox(
-            width: double.infinity,
-            height: 55,
-          ),
+        title: const Text('Histori Pembayaran'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.receipt_long),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Tampilkan Rekapitulasi Tagihan.')),
+              );
+            },
+          )
         ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Info Total Tagihan
+            _buildTagihanInfo(context),
+            const SizedBox(height: 25),
+
+            const Text(
+              'Riwayat Transaksi',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 15),
+
+            // Daftar Histori Pembayaran
+            ..._historiPembayaran.map((transaksi) => _buildTransaksiTile(context, transaksi)).toList(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildTagihanCard(BuildContext context, Map<String, dynamic> tagihan) {
-    Color statusColor = tagihan['status'] == 'Sudah Bayar' ? Colors.green : Colors.red;
-    IconData statusIcon = tagihan['status'] == 'Sudah Bayar' ? Icons.check_circle : Icons.warning_amber;
+  String _formatCurrency(int amount) {
+    // Simulasi format rupiah sederhana
+    String s = amount.toString();
+    String result = '';
+    int count = 0;
+    for (int i = s.length - 1; i >= 0; i--) {
+      result = s[i] + result;
+      count++;
+      if (count % 3 == 0 && i != 0) {
+        result = '.' + result;
+      }
+    }
+    return 'Rp $result';
+  }
+
+  Widget _buildTagihanInfo(BuildContext context) {
+    // Total tagihan yang belum dibayar (SPP S5 + Denda)
+    int totalTagihan = 6500000 + 100000;
 
     return Card(
-      elevation: 4,
-      margin: const EdgeInsets.only(bottom: 15),
+      elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          gradient: LinearGradient(
+            colors: [Colors.purple.shade500, Colors.purple.shade700],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  tagihan['jenis']!,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigo),
-                ),
-                Icon(statusIcon, color: statusColor),
-              ],
-            ),
-            const Divider(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Jumlah:', style: TextStyle(fontSize: 14, color: Colors.grey)),
-                Text(
-                  'Rp${tagihan['jumlah']}',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black87),
-                ),
-              ],
-            ),
+            const Text('Total Tagihan Belum Dibayar', style: TextStyle(color: Colors.white70, fontSize: 16)),
             const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Jatuh Tempo:', style: TextStyle(fontSize: 14, color: Colors.grey)),
-                Text(
-                  tagihan['jatuh_tempo']!,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black87),
-                ),
-              ],
+            Text(
+              _formatCurrency(totalTagihan),
+              style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 15),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: () => _handleBayar(context, tagihan),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Navigasi ke halaman pembayaran/checkout.')),
+                  );
+                },
+                icon: const Icon(Icons.account_balance_wallet, color: Colors.purple),
+                label: const Text('Bayar Sekarang', style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: tagihan['status'] == 'Belum Bayar' ? Colors.blue : Colors.grey,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                child: Text(
-                  tagihan['status'] == 'Belum Bayar' ? 'Bayar Sekarang' : 'Lunas',
-                  style: const TextStyle(color: Colors.white),
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  elevation: 0,
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTransaksiTile(BuildContext context, Map<String, dynamic> transaksi) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: transaksi['color'].withOpacity(0.15),
+          child: Icon(
+            transaksi['status'] == 'Lunas' ? Icons.check : Icons.close, 
+            color: transaksi['color'] as Color
+          ),
+        ),
+        title: Text(transaksi['jenis']!, style: const TextStyle(fontWeight: FontWeight.w600)),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Jumlah: ${_formatCurrency(transaksi['jumlah']!)}'),
+            Text('Tgl. Transaksi: ${transaksi['tanggal']!}', style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+          ],
+        ),
+        trailing: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: transaksi['color'].withOpacity(0.1),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Text(
+            transaksi['status']!,
+            style: TextStyle(
+              color: transaksi['color'] as Color,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Detail transaksi ${transaksi['jenis']}')),
+          );
+        },
       ),
     );
   }
